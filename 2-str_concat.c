@@ -2,27 +2,22 @@
 #include <stdlib.h>
 #include <string.h>
 
-char *str_concat(char *s1, char *s2);
+char *str_concat(char *s1, char *s2, size_t n);
 
 int main(void)
 {
 
-    char *s;
+   char *concat;
 
-    s = str_concat("Betty ", "Holberton");
-    if (s == NULL)
-    {
-        printf("failed\n");
-        return (1);
-    }
-    printf("%s\n", s);
-    free(s);
+    concat = str_concat("Best ", "School !!!", 6);
+    printf("%s\n", concat);
+    free(concat);
     return (0);
 
 }
-char *str_concat(char *s1, char *s2)
+char *str_concat(char *s1, char *s2, size_t n)
 {
-    int i, len1, len2;
+    int i, len1;
     char *ptr;
 
    
@@ -33,17 +28,16 @@ char *str_concat(char *s1, char *s2)
         return NULL;
     
     len1 = strlen(s1);
-    len2 = strlen(s2);
 
-    ptr = (char *) malloc(sizeof(char) * (len1 + len2 + 1));
+    ptr = malloc(sizeof *ptr * (len1 + n + 1));
 
     for (i = 0; i < len1; i++)
         ptr[i] = s1[i];
         
-    for (int j = 0; j <len2 ; j++)
+    for (int j = 0; j < n ; j++)
         ptr[len1 + j] = s2[j];
     
     
-    ptr[len1 + len2] = '\0';
+    ptr[len1 + n] = '\0';
     return ptr;
 }
