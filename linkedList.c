@@ -10,6 +10,7 @@ struct node
 
 void count_of_nodes(struct node *head);
 void print_data(struct node * head);
+void add_at_end(struct node *head, int data);
 
 int main(void)
 {
@@ -36,6 +37,10 @@ int main(void)
   /**connect this third node to second node*/
   head->link->link = current;
 
+
+
+  
+    add_at_end(head, 100);
    count_of_nodes(head);
    print_data(head);
     return 0;
@@ -72,5 +77,23 @@ void print_data(struct node *head)
         ptr = ptr->link;
     }
     printf("\n");
+}
+
+void add_at_end(struct node *head, int data)
+{
+    struct node *ptr, *temp;
+
+    temp = malloc(sizeof(struct node));
+
+    temp->data = data;
+    temp->link = NULL;
+
+    ptr = head;
+
+    while(ptr->link != NULL)
+    {
+        ptr = ptr->link;
+    }
+    ptr->link = temp;
 }
 
