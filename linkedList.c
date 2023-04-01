@@ -1,99 +1,150 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/**Declarre struct for the node*/
-struct node
-{
-    int data;
+typedef struct node{
     struct node *link;
-};
+    int data;
 
-void count_of_nodes(struct node *head);
-void print_data(struct node * head);
-void add_at_end(struct node *head, int data);
+} node;
+ node *add_at_end(node **head, int data);
+void print_list(node *head);
+void add_at_pos(node *head, int data, int pos);
+void add_at_beginning(node **head, int data);
+node *del_first(node *head);
+node *del_last(node *head);
 
 int main(void)
 {
-  struct node *head, *current;
-
-  /**CReate first node*/
-  head = malloc(sizeof(struct node));
-  head->data = 45;
-  head->link = NULL;
-
-  /**creating second node*/
-  current = malloc(sizeof(struct node));
-  current->data = 98;
-  current->link = NULL;
-
-  /**Link the two nodes*/
-  head->link = current;
-
-  /**Create third node*/
-  current = malloc(sizeof(sizeof(struct node)));
-  current->data = 3;
-  current->link = NULL;
-
-  /**connect this third node to second node*/
-  head->link->link = current;
+    node *head = NULL;
+    add_at_beginning(&head, 99);
+    add_at_end(&head, 20);
+    add_at_end(&head, 12);
+    add_at_end(&head, 65);
+    add_at_end(&head, 78);
+    add_at_end(&head, 14);
+    add_at_end(&head, 13);
+    add_at_pos(head, 2500, 3);
+    add_at_pos(head, 9865,5);
+    add_at_beginning(&head, 8888);
+    head = del_last(head);
+    head = del_first(head);
+    print_list(head);
 
 
-
-  
-    add_at_end(head, 100);
-   count_of_nodes(head);
-   print_data(head);
+    
     return 0;
 }
-void count_of_nodes(struct node *head)
-{
-    int count = 0;
-    struct node *ptr= NULL;
+ node *add_at_end(node **head, int data)
+ {
+    node *ptr, *new;
 
+    new = malloc(sizeof(node));
+    new->data = data;
+    new->link = NULL;
 
-    if (head == NULL)
-        printf("The linked List is Empty");
-    
-    ptr = head;
+    if (*head == NULL)
+        return (*head = new);
 
-    while(ptr != NULL)
-    {
-        count++;
+    ptr = *head;
+
+    while (ptr->link != NULL)
         ptr = ptr->link;
-    }
-    printf("%d\n", count);
-}
+    ptr->link = new;
 
-void print_data(struct node *head)
+    return (new);
+ }
+void print_list(node *head)
 {
     if (head == NULL)
-        printf("THe linked list is empty");
+        printf("List is empty");
 
-    struct node *ptr = head;
+    node *ptr = head;
 
     while(ptr != NULL)
     {
         printf("%d ", ptr->data);
         ptr = ptr->link;
     }
+
     printf("\n");
-}
 
-void add_at_end(struct node *head, int data)
+}
+ 
+void add_at_pos(node *head, int data, int pos)
 {
-    struct node *ptr, *temp;
+    node *new, *tmp;
 
-    temp = malloc(sizeof(struct node));
+    new = malloc(sizeof(node));
+    new->data = data;
+    new->link = NULL;
 
-    temp->data = data;
-    temp->link = NULL;
+    tmp = head;
 
-    ptr = head;
-
-    while(ptr->link != NULL)
+    pos--;
+    while(pos != 1)
     {
-        ptr = ptr->link;
+        tmp = tmp->link;
+        pos--;
     }
-    ptr->link = temp;
+    new->link = tmp->link;
+    tmp->link = new;
 }
+void add_at_beginning(node **head, int data)
+{
+    node *new;
 
+    new = malloc(sizeof(node));
+    new->data = data;
+    new->link = NULL;
+
+    new->link = *head;
+    *head = new;
+}
+node *del_first(node *head)
+{
+    node *tmp;
+
+    if (head == NULL)
+        printf("THe list is empty");
+    else
+        {
+            tmp = head;
+            head = head->link; /**Causing head to point to the next node on the right*/
+            free(tmp);
+            tmp = NULL; /**Catching a dangling pointer*/
+        }
+        return (head);
+}
+node *del_last(node *head)
+{
+    node *tmp;
+
+   if (head == NULL)
+   {
+        printf("List is empty");
+   }
+   else if (head->link == NULL)
+   {
+        free(head);
+        head = NULL;
+    }
+   else
+   {
+        node *tmp1, *tmp2;
+        tmp1 = head;
+        tmp2 = head;
+
+        while(tmp1->link != NULL)
+        {
+            tmp2 = tmp1;
+            tmp1 = tmp1->link;
+        }
+        tmp2->link = NULL;
+        free(tmp1);
+        tmp1 = NULL;
+    
+        return (head);
+   }
+
+    return (head);
+}
